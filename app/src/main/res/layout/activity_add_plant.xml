@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F9F7">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Plant"
+            android:textColor="#1B1B1B"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Choose a plant for your garden"
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <!-- Search -->
+
+        <EditText
+            android:id="@+id/etSearchPlant"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/plant_card_background"
+            android:hint="Search plants..."
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+        <!-- Plant List Title -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Choose a plant"
+            android:textColor="#222222"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Plant Options -->
+
+        <Button
+            android:id="@+id/btnMonstera"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:text="🌿  Monstera"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/btnPothos"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="🌿  Pothos"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/btnSnakePlant"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="🌱  Snake Plant"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/btnPeaceLily"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="🌿  Peace Lily"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/btnSpiderPlant"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="🌱  Spider Plant"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/btnAloeVera"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="🌵  Aloe Vera"
+            android:textAlignment="textStart" />
+
+        <!-- Color -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Card Color"
+            android:textColor="#222222"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/colorGreen"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="16dp"
+                android:background="#DDECCF" />
+
+            <View
+                android:id="@+id/colorBlue"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="16dp"
+                android:background="#D7E8F5" />
+
+            <View
+                android:id="@+id/colorYellow"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="16dp"
+                android:background="#F5E8B8" />
+
+            <View
+                android:id="@+id/colorPink"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="16dp"
+                android:background="#F2D9E5" />
+
+            <View
+                android:id="@+id/colorPurple"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="#E4DDF3" />
+
+        </LinearLayout>
+
+        <!-- Water Reminder -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Water Reminder"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switchWaterReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <!-- Add Button -->
+
+        <Button
+            android:id="@+id/btnAddPlant"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp"
+            android:text="+  Add Plant"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</ScrollView>
