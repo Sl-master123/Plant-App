@@ -1,3 +1,4 @@
+/** Creates the local Room database used to store plant records. */
 package com.example.myapplication;
 
 import android.content.Context;

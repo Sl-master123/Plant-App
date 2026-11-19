@@ -1,3 +1,4 @@
+/** Displays the app opening screen. */
 package com.example.myapplication;
 
 import android.content.Intent;

@@ -1,3 +1,4 @@
+/** Handles watering alarms and schedules the next reminder. */
 package com.example.myapplication;
 
 import android.app.AlarmManager;

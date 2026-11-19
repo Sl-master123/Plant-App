@@ -1,3 +1,4 @@
+/** Displays a plant's details and handles its actions. */
 package com.example.myapplication;
 
 import android.content.Intent;

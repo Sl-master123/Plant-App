@@ -1,3 +1,4 @@
+/** Displays and manages app settings. */
 package com.example.myapplication;
 
 import android.Manifest;

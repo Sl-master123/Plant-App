@@ -1,3 +1,4 @@
+/** Handles adding or editing a plant and setting its watering reminder. */
 package com.example.myapplication;
 
 import android.app.DatePickerDialog;

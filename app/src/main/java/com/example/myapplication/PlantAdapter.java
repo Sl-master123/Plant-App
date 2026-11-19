@@ -1,3 +1,4 @@
+/** Connects plant records to rows in the scrolling plant list. */
 package com.example.myapplication;
 
 import android.content.Context;

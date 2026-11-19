@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
+<!-- Defines which app data is included in device backups. -->
    Sample backup rules file; uncomment and customize as necessary.
    See https://developer.android.com/guide/topics/data/autobackup
    for details.

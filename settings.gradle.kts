@@ -1,3 +1,4 @@
+// Sets the project name, repositories, and included modules.
 pluginManagement {
     repositories {
         google {

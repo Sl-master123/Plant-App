@@ -1,3 +1,4 @@
+/** Defines the plant data and its watering reminder settings. */
 package com.example.myapplication;
 
 import androidx.room.Entity;

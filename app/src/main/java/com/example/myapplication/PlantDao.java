@@ -1,3 +1,4 @@
+/** Defines database queries and actions for plant records. */
 package com.example.myapplication;
 
 import androidx.room.Dao;

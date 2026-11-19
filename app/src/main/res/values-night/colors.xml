@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Defines colors used by the app in dark mode. -->
 <resources>
     <!-- Brand Colors (same - greens work in dark mode) -->
     <color name="green_dark">#388E3C</color>

@@ -1,3 +1,4 @@
+/** Displays, filters, and loads the user's saved plants. */
 package com.example.myapplication;
 
 import android.Manifest;

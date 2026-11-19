@@ -1,3 +1,4 @@
+/** Restores scheduled plant reminders after the device restarts. */
 package com.example.myapplication;
 
 import android.content.BroadcastReceiver;

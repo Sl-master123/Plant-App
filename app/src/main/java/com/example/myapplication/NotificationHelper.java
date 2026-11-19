@@ -1,3 +1,4 @@
+/** Creates notification channels and displays watering reminders. */
 package com.example.myapplication;
 
 import android.app.NotificationChannel;
