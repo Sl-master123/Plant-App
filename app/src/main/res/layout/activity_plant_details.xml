@@ -1,169 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9F7">
+    android:background="@color/bg_primary"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- Photo header (image or placeholder) -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="200dp">
 
-        <!-- Plant Image -->
-
-        <TextView
+        <ImageView
+            android:id="@+id/ivDetailsPlantImage"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="#DDECCF"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <!-- Placeholder header -->
+        <LinearLayout
+            android:id="@+id/layoutDetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/green_primary"
             android:gravity="center"
-            android:text="🌿"
-            android:textSize="80sp" />
+            android:orientation="vertical">
 
-        <!-- Plant Name -->
+            <TextView
+                android:id="@+id/tvDetailsEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌿"
+                android:textSize="60sp" />
 
-        <TextView
-            android:id="@+id/tvDetailsPlantName"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <!-- Back button overlay -->
+        <ImageButton
+            android:id="@+id/btnDetailsBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:background="#66000000"
+            android:contentDescription="Back"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="#FFFFFF" />
+
+        <!-- Plant name overlay on photo -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Monstera"
-            android:textColor="#1B1B1B"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:layout_gravity="bottom|start"
+            android:background="#80000000"
+            android:orientation="horizontal"
+            android:padding="14dp">
 
-        <!-- Date Planted -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDatePlanted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Planted on 12 August 2026"
-            android:textColor="#666666"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvDetailsPlantName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monstera"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-        <!-- Time Elapsed -->
+                <TextView
+                    android:id="@+id/tvDetailsCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indoor"
+                    android:textColor="#C8E6C9"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Favorite heart -->
+            <TextView
+                android:id="@+id/tvDetailsFavorite"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:text="♡"
+                android:textColor="@color/accent_red"
+                android:textSize="26sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Next Watering Card -->
+            <LinearLayout
+                android:id="@+id/layoutWateringCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Plant Age"
-                android:textColor="#777777"
-                android:textSize="14sp" />
+                android:background="@color/bg_card"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvPlantAge"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💧"
+                    android:textSize="30sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NEXT WATERING"
+                        android:textColor="@color/text_hint"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDetailsNextWatering"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Today — water now!"
+                        android:textColor="@color/text_green"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDetailsReminderSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Every 2 days at 09:00 AM"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Water Now button -->
+                <Button
+                    android:id="@+id/btnWaterNow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@color/green_primary"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Water ✓"
+                    android:textColor="@color/text_on_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Reminder Toggle Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🔔 Notifications"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/switchDetailsReminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+            </LinearLayout>
+
+            <!-- Care Notes Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="4 months old"
-                android:textColor="#222222"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📝 CARE NOTES"
+                    android:textColor="@color/text_hint"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailsDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="No care notes."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Added Date Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🌱 Added On"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDetailsAddedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="28 Aug 2026"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Edit / Delete buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDetailsEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/green_primary"
+                    android:text="✏ Edit Plant"
+                    android:textColor="@color/text_on_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnDetailsDelete"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="0.7"
+                    android:background="@color/accent_delete_bg"
+                    android:text="🗑 Delete"
+                    android:textColor="@color/accent_delete"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
 
-        <!-- Next Watering -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Next Watering"
-            android:textColor="#222222"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- Countdown Placeholder -->
-
-        <TextView
-            android:id="@+id/tvWaterCountdown"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:background="#DDECCF"
-            android:gravity="center"
-            android:text="2 days"
-            android:textColor="#31552A"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvNextWatering"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="Next watering: 14 August"
-            android:textColor="#666666"
-            android:textSize="14sp" />
-
-        <!-- Care Tip -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Care Tip"
-            android:textColor="#222222"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvCareTip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            android:text="Water your Monstera when the top few centimeters of soil become dry."
-            android:textColor="#555555"
-            android:textSize="15sp" />
-
-        <!-- Watering History -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Watering History"
-            android:textColor="#222222"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvWateringHistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            android:text="No watering history yet."
-            android:textColor="#777777"
-            android:textSize="14sp" />
-
-        <!-- Water Plant -->
-
-        <Button
-            android:id="@+id/btnWaterPlant"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="20dp"
-            android:text="💧  Water Plant"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

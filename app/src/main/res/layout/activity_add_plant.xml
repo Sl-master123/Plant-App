@@ -1,199 +1,479 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9F7">
+    android:background="@color/bg_primary"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <!-- Header -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Plant"
-            android:textColor="#1B1B1B"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Choose a plant for your garden"
-            android:textColor="#666666"
-            android:textSize="15sp" />
-
-        <!-- Search -->
-
-        <EditText
-            android:id="@+id/etSearchPlant"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/plant_card_background"
-            android:hint="Search plants..."
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:singleLine="true"
-            android:textSize="15sp" />
-
-        <!-- Plant List Title -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Choose a plant"
-            android:textColor="#222222"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <!-- Plant Options -->
-
-        <Button
-            android:id="@+id/btnMonstera"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="12dp"
-            android:text="🌿  Monstera"
-            android:textAlignment="textStart" />
-
-        <Button
-            android:id="@+id/btnPothos"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:text="🌿  Pothos"
-            android:textAlignment="textStart" />
-
-        <Button
-            android:id="@+id/btnSnakePlant"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:text="🌱  Snake Plant"
-            android:textAlignment="textStart" />
-
-        <Button
-            android:id="@+id/btnPeaceLily"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:text="🌿  Peace Lily"
-            android:textAlignment="textStart" />
-
-        <Button
-            android:id="@+id/btnSpiderPlant"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:text="🌱  Spider Plant"
-            android:textAlignment="textStart" />
-
-        <Button
-            android:id="@+id/btnAloeVera"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:text="🌵  Aloe Vera"
-            android:textAlignment="textStart" />
-
-        <!-- Color -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Card Color"
-            android:textColor="#222222"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
+        <!-- Top green header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:background="@color/green_primary"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="18dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="16dp">
 
-            <View
-                android:id="@+id/colorGreen"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginEnd="16dp"
-                android:background="#DDECCF" />
-
-            <View
-                android:id="@+id/colorBlue"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginEnd="16dp"
-                android:background="#D7E8F5" />
-
-            <View
-                android:id="@+id/colorYellow"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginEnd="16dp"
-                android:background="#F5E8B8" />
-
-            <View
-                android:id="@+id/colorPink"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginEnd="16dp"
-                android:background="#F2D9E5" />
-
-            <View
-                android:id="@+id/colorPurple"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="#E4DDF3" />
-
-        </LinearLayout>
-
-        <!-- Water Reminder -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="#FFFFFF" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="Water Reminder"
-                android:textColor="#222222"
-                android:textSize="16sp" />
-
-            <Switch
-                android:id="@+id/switchWaterReminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true" />
-
+                android:text="Add Plant"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Add Button -->
-
-        <Button
-            android:id="@+id/btnAddPlant"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="20dp"
-            android:text="+  Add Plant"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp">
 
+            <!-- Photo Card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Plant Photo"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:id="@+id/btnSelectPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@color/bg_card"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/ivAddPlantPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layoutPhotoPlaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📷"
+                        android:textSize="38sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Tap to add photo"
+                        android:textColor="@color/text_green"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Plant Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Plant Name *"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPlantName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:hint="e.g. Monstera, Tomato, Basil..."
+                android:inputType="textCapWords"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp" />
+
+            <!-- Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Category"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnCatIndoor"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/bg_chip_selected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🌿 Indoor"
+                        android:textColor="@color/text_green"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnCatVegetable"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/bg_chip_unselected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🥦 Vegetables"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnCatFruit"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/bg_chip_unselected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🍓 Fruits"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnCatHerb"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/bg_chip_unselected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🌿 Herbs"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnCatSucculent"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/bg_chip_unselected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🌵 Succulents"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnCatFlower"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@color/bg_chip_unselected"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="🌸 Flowers"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Notes / Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Care Notes"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPlantDescription"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:gravity="top|start"
+                android:hint="Sunlight needs, watering tips, soil type..."
+                android:padding="12dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="14sp" />
+
+            <!-- Reminder Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/bg_card"
+                android:elevation="1dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🔔 Watering Reminder"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/switchWaterReminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+            </LinearLayout>
+
+            <!-- Reminder Details -->
+            <LinearLayout
+                android:id="@+id/layoutReminderDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/bg_card_alt"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <!-- Interval -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Repeat Every"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@color/bg_chip_unselected"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnDecInterval"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@color/green_pale"
+                        android:text="−"
+                        android:textColor="@color/text_green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tvIntervalText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Every 1 day"
+                        android:textColor="@color/text_green"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnIncInterval"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@color/green_pale"
+                        android:text="+"
+                        android:textColor="@color/text_green"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <!-- Date Pickers Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btnPickStartDate"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:background="@color/bg_card"
+                        android:clickable="true"
+                        android:elevation="1dp"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📅 START DATE"
+                            android:textColor="@color/text_hint"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvStartDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Today"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnPickEndDate"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="@color/bg_card"
+                        android:clickable="true"
+                        android:elevation="1dp"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🏁 END DATE"
+                            android:textColor="@color/text_hint"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvEndDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="10 Sep 2026"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Time Picker -->
+                <LinearLayout
+                    android:id="@+id/btnPickTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/bg_card"
+                    android:clickable="true"
+                    android:elevation="1dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="⏰ Reminder Time"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvReminderTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="09:00 AM"
+                        android:textColor="@color/text_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Summary -->
+                <TextView
+                    android:id="@+id/tvReminderSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/green_pale"
+                    android:padding="10dp"
+                    android:text="Reminds every 1 day at 09:00 AM"
+                    android:textColor="@color/text_green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btnAddPlant"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/green_primary"
+                android:text="SAVE PLANT"
+                android:textColor="@color/text_on_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
-
 </ScrollView>
