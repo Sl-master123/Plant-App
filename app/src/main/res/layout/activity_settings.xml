@@ -228,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Vikum Kalhara"
+                    android:text="Group: OAKSHADE"
                     android:textColor="@color/text_green"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -236,9 +236,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
+                    android:text="Vikum Kalhara , Sajith Weerathunga"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:gravity="center"
-                    android:text="Plant Care · 2026\nAll rights reserved"
+                    android:text="Developed for Mobile Application Development\nPlant Care · 2026 · All rights reserved"
                     android:textColor="@color/text_hint"
                     android:textSize="11sp" />
             </LinearLayout>

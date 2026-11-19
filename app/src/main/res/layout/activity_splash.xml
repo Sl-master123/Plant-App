@@ -76,9 +76,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
-        android:text="Developed by Vikum Kalhara"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Developed for Mobile Application Development\nGroup: OAKSHADE"
         android:textColor="#80FFFFFF"
-        android:textSize="12sp" />
+        android:textSize="11sp" />
 
 </RelativeLayout>
