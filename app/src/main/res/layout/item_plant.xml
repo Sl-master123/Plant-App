@@ -1,69 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginBottom="12dp"
-    android:background="@drawable/plant_card_background"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/bg_card"
+    android:elevation="2dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="12dp">
+    android:padding="14dp">
 
-    <!-- Plant image placeholder -->
-    <TextView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="#E3F0D8"
-        android:gravity="center"
-        android:text="🌿"
-        android:textSize="40sp" />
+    <!-- Plant image / Emoji container -->
+    <FrameLayout
+        android:layout_width="76dp"
+        android:layout_height="76dp">
 
-    <!-- Plant information -->
+        <ImageView
+            android:id="@+id/ivPlantImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvPlantEmojiPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/green_pale"
+            android:gravity="center"
+            android:text="🌿"
+            android:textSize="36sp" />
+    </FrameLayout>
+
+    <!-- Plant Info -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="14dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- Name row + Category badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvPlantName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Monstera"
+                android:textColor="@color/text_primary"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPlantCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@color/green_badge"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="Indoor"
+                android:textColor="@color/text_green"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Watering countdown chip -->
         <TextView
-            android:id="@+id/tvPlantName"
+            android:id="@+id/tvWateringCountdownCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monstera"
-            android:textColor="#222222"
-            android:textSize="19sp"
+            android:layout_marginTop="5dp"
+            android:background="@color/green_surface"
+            android:paddingStart="8dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="3dp"
+            android:text="💧 Water today"
+            android:textColor="@color/text_green"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvPlantAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="4 months old"
-            android:textColor="#666666"
-            android:textSize="14sp" />
-
+        <!-- Description / Notes -->
         <TextView
             android:id="@+id/tvPlantDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:maxLines="2"
-            android:text="A beautiful tropical indoor plant."
-            android:textColor="#777777"
-            android:textSize="13sp" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Care notes..."
+            android:textColor="@color/text_hint"
+            android:textSize="12sp" />
+
+        <!-- Hidden age (kept for adapter compat) -->
+        <TextView
+            android:id="@+id/tvPlantAge"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
-    <!-- Favorite button -->
-    <TextView
-        android:id="@+id/tvFavorite"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <!-- Right actions column -->
+    <LinearLayout
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="♡"
-        android:textColor="#555555"
-        android:textSize="26sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvFavorite"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="♡"
+            android:textColor="@color/accent_red"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/btnDeletePlant"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="🗑"
+            android:textColor="@color/accent_delete"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

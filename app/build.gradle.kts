@@ -34,7 +34,12 @@ android {
 }
 dependencies {
     implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
     implementation(libs.androidx.recyclerview)
+
+    // Room Database
+    implementation("androidx.room:room-runtime:2.8.4")
+    annotationProcessor("androidx.room:room-compiler:2.8.4")
+
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
 }

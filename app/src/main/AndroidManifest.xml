@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,31 +20,63 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <!-- Add Plant Screen -->
+        <!-- Splash Screen (LAUNCHER) -->
         <activity
-            android:name=".AddPlantActivity"
-            android:exported="false" />
-
-        <!-- Plant Details Screen -->
-        <activity
-            android:name=".PlantDetailsActivity"
-            android:exported="false" />
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyApplication.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Main Screen -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- Add Plant Screen -->
+        <activity
+            android:name=".AddPlantActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Plant Details Screen -->
+        <activity
+            android:name=".PlantDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Settings Screen -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:screenOrientation="portrait" />
+
+        <!-- Receivers -->
+        <receiver
+            android:name=".WateringReminderReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.example.myapplication.TRIGGER_REMINDER" />
+                <action android:name="com.example.myapplication.MARK_WATERED" />
+                <action android:name="com.example.myapplication.SNOOZE" />
             </intent-filter>
+        </receiver>
 
-        </activity>
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

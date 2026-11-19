@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MyApplication" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="Theme.MyApplication" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <item name="colorAccent">@color/green_medium</item>
+        <item name="android:windowBackground">@color/bg_primary</item>
+        <!-- Status bar blends with our green toolbar -->
+        <item name="android:statusBarColor">@color/green_primary</item>
+        <!-- Keep status bar icons WHITE (visible on dark green) -->
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Keep navigation bar matching background -->
+        <item name="android:navigationBarColor">@color/bg_primary</item>
+        <!-- Let our code handle insets so header fills behind status bar -->
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
+
+    <style name="Theme.MyApplication.Splash" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/green_primary</item>
+        <item name="android:statusBarColor">@color/green_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
 
 </resources>
