@@ -21,12 +21,39 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * ============================================================================
+ * PlantAdapter.java
+ * ============================================================================
+ * Role: RecyclerView Adapter & ViewHolder Pattern for Plant Cards.
+ * 
+ * Key Concepts for Project Demonstration:
+ * 1. RecyclerView Architecture:
+ *    - Memory Efficient: Re-uses (recycles) view objects as the user scrolls,
+ *      preventing out-of-memory errors even with hundreds of plants.
+ *    - onCreateViewHolder(): Inflates item_plant.xml layout.
+ *    - onBindViewHolder(): Binds data from Plant model to UI elements.
+ * 2. View Recycling & Image State Management:
+ *    To prevent recycled views showing wrong images (a notorious Android bug),
+ *    the bitmap is cleared and reset explicitly before loading or falling back
+ *    to category emojis.
+ * 3. Asynchronous Database Updates:
+ *    Uses ExecutorService to perform DB updates (favorite toggle, deletion)
+ *    off the UI thread, then synchronizes UI on runOnUiThread().
+ * 4. Dynamic Watering Countdown:
+ *    Calculates whether watering is "Overdue ⚠️", "Today 💧", "Tomorrow 💧",
+ *    or "In N days" with matching badge colors.
+ * ============================================================================
+ */
 public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHolder> {
 
     private List<Plant> plantList;
     private PlantDao plantDao;
     private ExecutorService executorService;
 
+    /**
+     * Constructor accepts plant data list and Room DAO reference.
+     */
     public PlantAdapter(List<Plant> plantList, PlantDao plantDao) {
         this.plantList = plantList;
         this.plantDao = plantDao;
@@ -36,6 +63,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     @NonNull
     @Override
     public PlantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate individual plant card layout
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_plant, parent, false);
         return new PlantViewHolder(view);
@@ -45,6 +73,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     public void onBindViewHolder(@NonNull PlantViewHolder holder, int position) {
         Plant plant = plantList.get(position);
 
+        // 1. Bind text details
         holder.tvPlantName.setText(plant.getName());
         holder.tvPlantCategory.setText(plant.getCategory() != null ? plant.getCategory() : "Indoor");
         holder.tvPlantDescription.setText(
@@ -53,7 +82,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                         : "No care notes"
         );
 
-        // ── Critical Bug Fix: always reset image state before binding ──
+        // 2. Image Loading & Recycling Safety:
+        // Always clear stale bitmap first to avoid recycled view artifact glitches
         if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()
                 && new File(plant.getImageUri()).exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(plant.getImageUri());
@@ -62,22 +92,22 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                 holder.ivPlantImage.setVisibility(View.VISIBLE);
                 holder.tvPlantEmojiPlaceholder.setVisibility(View.GONE);
             } else {
-                holder.ivPlantImage.setImageBitmap(null);   // clear stale bitmap
+                holder.ivPlantImage.setImageBitmap(null);
                 showDefaultEmoji(holder, plant);
             }
         } else {
-            holder.ivPlantImage.setImageBitmap(null);       // clear stale bitmap
+            holder.ivPlantImage.setImageBitmap(null);
             showDefaultEmoji(holder, plant);
         }
 
-        // Watering countdown
+        // 3. Bind dynamic watering countdown badge
         bindWateringCountdown(holder, plant);
 
-        // Favorite heart
+        // 4. Favorite Toggle (Heart Icon)
         holder.tvFavorite.setText(plant.isFavorite() ? "♥" : "♡");
-
         holder.tvFavorite.setOnClickListener(v -> {
             plant.setFavorite(!plant.isFavorite());
+            // Update database on background worker thread
             executorService.execute(() -> {
                 plantDao.updatePlant(plant);
                 if (v.getContext() instanceof MainActivity) {
@@ -90,7 +120,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
             });
         });
 
-        // Delete button
+        // 5. Delete Action with Confirmation Dialog
         holder.btnDeletePlant.setOnClickListener(v -> {
             Context context = v.getContext();
             new AlertDialog.Builder(context)
@@ -98,6 +128,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                     .setMessage("Remove \"" + plant.getName() + "\" from your garden?")
                     .setPositiveButton("Delete 🗑", (dialog, which) -> {
                         executorService.execute(() -> {
+                            // Remove from Room DB and cancel system alarms
                             plantDao.deletePlant(plant);
                             WateringReminderReceiver.cancelPlantAlarm(context, plant.getId());
                             if (context instanceof MainActivity) {
@@ -117,7 +148,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                     .show();
         });
 
-        // Open details on card tap
+        // 6. Tap Card to View Details
         holder.itemView.setOnClickListener(view -> {
             Context context = view.getContext();
             Intent intent = new Intent(context, PlantDetailsActivity.class);
@@ -126,6 +157,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         });
     }
 
+    /**
+     * Sets category-specific emoji placeholder when no custom photo is attached.
+     */
     private void showDefaultEmoji(PlantViewHolder holder, Plant plant) {
         holder.ivPlantImage.setVisibility(View.GONE);
         holder.tvPlantEmojiPlaceholder.setVisibility(View.VISIBLE);
@@ -140,6 +174,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         }
     }
 
+    /**
+     * Calculates remaining days/hours until next watering and styles countdown badge.
+     */
     private void bindWateringCountdown(PlantViewHolder holder, Plant plant) {
         TextView countdownView = holder.tvWateringCountdownCard;
         if (countdownView == null) return;
@@ -151,31 +188,33 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
 
         long nextTime = WateringReminderReceiver.calculateNextTriggerTime(plant);
         if (nextTime <= 0) {
-            // Fallback: use lastWatered + frequency
+            // Fallback calculation using lastWateredTimestamp + frequency
             nextTime = plant.getLastWateredTimestamp()
                     + (plant.getWateringFrequency() * 24L * 60 * 60 * 1000);
         }
 
         long timeLeft = nextTime - System.currentTimeMillis();
         long daysLeft = timeLeft / (24L * 60 * 60 * 1000);
-        long hoursLeft = timeLeft / (60L * 60 * 1000);
 
         countdownView.setVisibility(View.VISIBLE);
 
         if (timeLeft < 0) {
+            // Overdue state
             countdownView.setText("⚠️ Overdue – water now!");
-            countdownView.setBackgroundResource(0);
             countdownView.setBackgroundColor(0xFFFFEBEE);
             countdownView.setTextColor(0xFFC62828);
         } else if (daysLeft == 0) {
+            // Today
             countdownView.setText("💧 Water today!");
             countdownView.setBackgroundColor(0xFFDDECCF);
             countdownView.setTextColor(0xFF2E7D32);
         } else if (daysLeft == 1) {
+            // Tomorrow
             countdownView.setText("💧 Water tomorrow");
             countdownView.setBackgroundColor(0xFFDDECCF);
             countdownView.setTextColor(0xFF2E7D32);
         } else {
+            // Future days
             countdownView.setText("💧 In " + daysLeft + " days");
             countdownView.setBackgroundColor(0xFFF0F6EE);
             countdownView.setTextColor(0xFF4CAF50);
@@ -187,6 +226,10 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         return plantList.size();
     }
 
+    /**
+     * ViewHolder holds references to the subviews of each plant item row,
+     * avoiding repeated and expensive findViewById calls during scrolling.
+     */
     public static class PlantViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPlantImage;
         TextView tvPlantEmojiPlaceholder;

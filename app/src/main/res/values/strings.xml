@@ -1,3 +1,4 @@
+<!-- Defines reusable text labels and messages. -->
 <resources>
     <string name="app_name">Plant Care Reminder</string>
 </resources>

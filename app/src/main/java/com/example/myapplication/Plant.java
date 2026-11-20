@@ -4,31 +4,50 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+/**
+ * ============================================================================
+ * Plant.java (Entity Model)
+ * ============================================================================
+ * Role: Represents a single plant record stored in the SQLite 'plants' table.
+ * 
+ * Key Concepts for Project Demonstration:
+ * 1. Room Entity: Marked with @Entity(tableName = "plants"). Each instance
+ *    corresponds to a row in the database table.
+ * 2. Primary Key: @PrimaryKey(autoGenerate = true) ensures an automatic,
+ *    unique integer ID for every plant.
+ * 3. Smart Watering Fields: Stores reminders, intervals, start/end dates,
+ *    time of day (hour & minute), and last-watered timestamp.
+ * 4. Image Support: Stores the absolute internal file URI of the captured/selected
+ *    photo on the device.
+ * ============================================================================
+ */
 @Entity(tableName = "plants")
 public class Plant {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int id;                         // Unique auto-generated ID
 
-    private String name;
-    private String category; // "Indoor", "Vegetables", "Fruits", "Herbs", "Succulents", "Flowers"
-    private String age;
-    private String description;
-    private boolean favorite;
-    private int wateringFrequency; // in days
-    private long lastWateredTimestamp;
-    private String imageUri;
-    private long createdTimestamp;
+    private String name;                    // Plant name (e.g., "Monstera")
+    private String category;                // "Indoor", "Vegetables", "Fruits", "Herbs", "Succulents", "Flowers"
+    private String age;                     // Age description (e.g., "6 months")
+    private String description;             // Care notes and description
+    private boolean favorite;               // Whether marked as favorite (heart icon)
+    private int wateringFrequency;          // Watering frequency in days (e.g., every 2 days)
+    private long lastWateredTimestamp;      // Epoch millisecond timestamp of last watering
+    private String imageUri;                // Internal storage path to plant photo
+    private long createdTimestamp;          // Epoch millisecond timestamp when plant was added
 
-    // Reminder settings
-    private boolean reminderEnabled;
-    private long reminderStartDate;
-    private long reminderEndDate;
-    private int reminderIntervalDays;
-    private int reminderHour;
-    private int reminderMinute;
+    // Reminder Configuration
+    private boolean reminderEnabled;        // Toggle switch state for watering notifications
+    private long reminderStartDate;         // Epoch millis for reminder period start
+    private long reminderEndDate;           // Epoch millis for reminder period expiration
+    private int reminderIntervalDays;       // Interval between reminders (e.g. 1 = daily, 3 = every 3 days)
+    private int reminderHour;               // Hour of reminder (0-23, 24-hr format)
+    private int reminderMinute;             // Minute of reminder (0-59)
 
-    // Constructor used by Room
+    /**
+     * Primary constructor used by Room Database to reconstruct Plant objects from SQLite rows.
+     */
     public Plant(
             String name,
             String category,
@@ -63,7 +82,10 @@ public class Plant {
         this.reminderMinute = reminderMinute;
     }
 
-    // Constructor used by UI code
+    /**
+     * Convenience constructor for basic UI usage.
+     * Ignored by Room so it does not conflict with the primary constructor.
+     */
     @Ignore
     public Plant(
             String name,
@@ -74,6 +96,10 @@ public class Plant {
         this(name, category, age, description, null);
     }
 
+    /**
+     * Convenience constructor with image URI and sensible defaults.
+     * Ignored by Room.
+     */
     @Ignore
     public Plant(
             String name,
@@ -96,9 +122,13 @@ public class Plant {
         // Default end date: 30 days from now
         this.reminderEndDate = System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000);
         this.reminderIntervalDays = 1;
-        this.reminderHour = 9;
+        this.reminderHour = 9;   // Default 9:00 AM
         this.reminderMinute = 0;
     }
+
+    // ==========================================
+    // Getters and Setters
+    // ==========================================
 
     public int getId() {
         return id;
@@ -227,4 +257,4 @@ public class Plant {
     public void setReminderMinute(int reminderMinute) {
         this.reminderMinute = reminderMinute;
     }
-}
+}

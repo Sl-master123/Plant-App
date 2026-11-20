@@ -1,3 +1,4 @@
+// Configures the Android app module, SDK versions, and libraries.
 plugins {
     alias(libs.plugins.android.application)
 

@@ -32,22 +32,48 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * ============================================================================
+ * AddPlantActivity.java
+ * ============================================================================
+ * Role: Plant Creation and Editing Form with Comprehensive Reminder Setup.
+ * 
+ * Key Concepts for Project Demonstration:
+ * 1. Dual Mode (Create vs Edit):
+ *    - If intent contains "plant_id", loads existing plant data and displays
+ *      "✓ Update Plant".
+ *    - Otherwise, creates a brand new Plant record.
+ * 2. Modern Activity Result API (Photo Picker):
+ *    Uses ActivityResultContracts.GetContent() to safely select images from
+ *    device gallery without deprecated startActivityForResult().
+ * 3. File System & Image Persistence:
+ *    Copies selected photos into app internal storage (getFilesDir()/plant_photos)
+ *    so photos remain accessible even if original files are moved/deleted.
+ * 4. Interactive Dialog Pickers:
+ *    - DatePickerDialog for Start Date and End Date.
+ *    - TimePickerDialog for exact watering reminder time of day.
+ *    - Dynamic summary preview: "Reminds every N days at HH:mm from X to Y".
+ * 5. Automatic Alarm Scheduling:
+ *    Upon saving, immediately schedules an exact alarm via WateringReminderReceiver.
+ * ============================================================================
+ */
 public class AddPlantActivity extends AppCompatActivity {
 
+    // Input fields
     private EditText etPlantName;
     private EditText etPlantDescription;
 
-    // Categories
+    // Category Selector Buttons
     private Button btnCatIndoor, btnCatVegetable, btnCatFruit, btnCatHerb, btnCatSucculent, btnCatFlower;
     private String selectedCategory = "Indoor";
 
-    // Photo
+    // Photo Selection
     private ImageView ivAddPlantPhoto;
     private View layoutPhotoPlaceholder;
     private String selectedImageUriString = null;
     private ActivityResultLauncher<String> imagePickerLauncher;
 
-    // Reminders
+    // Reminder Configuration Views
     private Switch switchWaterReminder;
     private LinearLayout layoutReminderDetails;
     private Button btnDecInterval, btnIncInterval;
@@ -55,18 +81,22 @@ public class AddPlantActivity extends AppCompatActivity {
     private LinearLayout btnPickStartDate, btnPickEndDate, btnPickTime;
     private TextView tvStartDate, tvEndDate, tvReminderTime, tvReminderSummary;
 
+    // Reminder State Variables
     private int intervalDays = 1;
     private Calendar startCal = Calendar.getInstance();
     private Calendar endCal = Calendar.getInstance();
-    private int reminderHour = 9;
+    private int reminderHour = 9;   // Default 9:00 AM
     private int reminderMinute = 0;
 
+    // Save Button
     private Button btnAddPlant;
 
+    // Edit Mode State
     private int plantId = -1;
     private Plant editingPlant;
     private AppDatabase database;
 
+    // Date/Time Formatters
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
 
@@ -78,7 +108,7 @@ public class AddPlantActivity extends AppCompatActivity {
 
         database = AppDatabase.getInstance(this);
 
-        // Find views
+        // 1. Bind Form Views
         etPlantName = findViewById(R.id.etPlantName);
         etPlantDescription = findViewById(R.id.etPlantDescription);
 
@@ -110,15 +140,16 @@ public class AddPlantActivity extends AppCompatActivity {
 
         btnAddPlant = findViewById(R.id.btnAddPlant);
 
-        // Default End Date = Start Date + 30 days
+        // 2. Set default End Date = Start Date + 30 days
         endCal.add(Calendar.DAY_OF_YEAR, 30);
         updateDateDisplays();
 
-        // Photo picker launcher
+        // 3. Register Photo Picker using modern Activity Result Contract
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
+                        // Persist photo to internal storage
                         String savedPath = saveImageToInternalStorage(uri);
                         if (savedPath != null) {
                             selectedImageUriString = savedPath;
@@ -129,7 +160,7 @@ public class AddPlantActivity extends AppCompatActivity {
         );
         btnSelectPhoto.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
 
-        // Category selection
+        // 4. Setup Category Selector Buttons
         btnCatIndoor.setOnClickListener(v -> selectCategory("Indoor"));
         btnCatVegetable.setOnClickListener(v -> selectCategory("Vegetables"));
         btnCatFruit.setOnClickListener(v -> selectCategory("Fruits"));
@@ -137,12 +168,12 @@ public class AddPlantActivity extends AppCompatActivity {
         btnCatSucculent.setOnClickListener(v -> selectCategory("Succulents"));
         btnCatFlower.setOnClickListener(v -> selectCategory("Flowers"));
 
-        // Reminder toggle
+        // 5. Setup Reminder Toggle (shows/hides reminder settings card)
         switchWaterReminder.setOnCheckedChangeListener((buttonView, isChecked) -> {
             layoutReminderDetails.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
 
-        // Interval Stepper
+        // 6. Setup Interval Stepper (+ / - buttons)
         btnDecInterval.setOnClickListener(v -> {
             if (intervalDays > 1) {
                 intervalDays--;
@@ -156,7 +187,7 @@ public class AddPlantActivity extends AppCompatActivity {
             }
         });
 
-        // Date Pickers
+        // 7. Setup Date Pickers
         btnPickStartDate.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(
                     this,
@@ -189,7 +220,7 @@ public class AddPlantActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        // Time Picker
+        // 8. Setup Time Picker
         btnPickTime.setOnClickListener(v -> {
             TimePickerDialog dialog = new TimePickerDialog(
                     this,
@@ -200,23 +231,22 @@ public class AddPlantActivity extends AppCompatActivity {
                     },
                     reminderHour,
                     reminderMinute,
-                    false
+                    false // 12-hour format with AM/PM
             );
             dialog.show();
         });
 
-        // Save Plant click
+        // 9. Save Plant Button Click
         btnAddPlant.setOnClickListener(v -> savePlant());
 
-        // Check if editing existing plant
+        // 10. Check if editing an existing plant
         plantId = getIntent().getIntExtra("plant_id", -1);
         if (plantId != -1) {
-            // Update title in toolbar area if header view exists (optional)
             btnAddPlant.setText("✓  Update Plant");
             loadEditingPlant();
         }
 
-        // Back button
+        // 11. Back Navigation Button
         ImageButton btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) btnBack.setOnClickListener(v -> onBackPressed());
     }
@@ -229,10 +259,12 @@ public class AddPlantActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Updates selected category chip style and stores active category.
+     */
     private void selectCategory(String category) {
         selectedCategory = category;
 
-        // Reset all to unselected style
         int unselBg = ContextCompat.getColor(this, R.color.bg_chip_unselected);
         int unselText = ContextCompat.getColor(this, R.color.text_secondary);
         btnCatIndoor.setBackgroundColor(unselBg);    btnCatIndoor.setTextColor(unselText);
@@ -242,7 +274,6 @@ public class AddPlantActivity extends AppCompatActivity {
         btnCatSucculent.setBackgroundColor(unselBg); btnCatSucculent.setTextColor(unselText);
         btnCatFlower.setBackgroundColor(unselBg);    btnCatFlower.setTextColor(unselText);
 
-        // Highlight selected
         int selBg = ContextCompat.getColor(this, R.color.bg_chip_selected);
         int selText = ContextCompat.getColor(this, R.color.text_green);
         if ("Indoor".equals(category)) {
@@ -283,6 +314,9 @@ public class AddPlantActivity extends AppCompatActivity {
         updateSummaryText();
     }
 
+    /**
+     * Builds and updates the dynamic summary preview sentence.
+     */
     private void updateSummaryText() {
         String freq = intervalDays == 1 ? "every day" : "every " + intervalDays + " days";
         Calendar cal = Calendar.getInstance();
@@ -295,6 +329,13 @@ public class AddPlantActivity extends AppCompatActivity {
         tvReminderSummary.setText("Reminds " + freq + " at " + timeStr + "\nFrom " + startStr + " to " + endStr);
     }
 
+    /**
+     * Copies selected gallery image into internal app storage directory.
+     * Prevents security permission loss when Android restarts.
+     *
+     * @param uri Content URI from image picker
+     * @return Absolute file path on disk, or null on error
+     */
     private String saveImageToInternalStorage(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
@@ -333,6 +374,9 @@ public class AddPlantActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loads existing plant fields into the form for Edit Mode.
+     */
     private void loadEditingPlant() {
         new Thread(() -> {
             editingPlant = database.plantDao().getPlantById(plantId);
@@ -367,6 +411,10 @@ public class AddPlantActivity extends AppCompatActivity {
         }).start();
     }
 
+    /**
+     * Validates input, saves or updates the plant in Room DB on a worker thread,
+     * schedules the system alarm, and finishes the Activity.
+     */
     private void savePlant() {
         String name = etPlantName.getText().toString().trim();
         if (name.isEmpty()) {
@@ -381,9 +429,11 @@ public class AddPlantActivity extends AppCompatActivity {
         long startDate = startCal.getTimeInMillis();
         long endDate = endCal.getTimeInMillis();
 
+        // Perform Room Database insert/update off the UI thread
         new Thread(() -> {
             Plant plantToSave;
             if (plantId != -1 && editingPlant != null) {
+                // Update existing record
                 editingPlant.setName(name);
                 editingPlant.setCategory(selectedCategory);
                 editingPlant.setDescription(description);
@@ -403,6 +453,7 @@ public class AddPlantActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> Toast.makeText(this, name + " updated!", Toast.LENGTH_SHORT).show());
             } else {
+                // Create brand new plant record
                 plantToSave = new Plant(
                         name,
                         selectedCategory,
@@ -422,7 +473,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 );
                 database.plantDao().insertPlant(plantToSave);
 
-                // Re-query inserted plant to get generated ID
+                // Fetch inserted plant with generated primary key
                 List<Plant> plants = database.plantDao().getAllPlants();
                 if (!plants.isEmpty()) {
                     plantToSave = plants.get(plants.size() - 1);
@@ -431,7 +482,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(this, name + " added to your garden!", Toast.LENGTH_SHORT).show());
             }
 
-            // Schedule alarm for this plant
+            // Schedule or update AlarmManager alarm for this plant
             if (plantToSave != null) {
                 WateringReminderReceiver.schedulePlantAlarm(this, plantToSave);
             }
