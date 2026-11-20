@@ -1,4 +1,3 @@
-/** Displays a plant's details and handles its actions. */
 package com.example.myapplication;
 
 import android.content.Intent;
@@ -26,6 +25,30 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * ============================================================================
+ * PlantDetailsActivity.java
+ * ============================================================================
+ * Role: Detailed Plant Profile, Live Status, and Care Operations Screen.
+ * 
+ * Key Concepts for Project Demonstration:
+ * 1. Deep Dive UI:
+ *    Presents complete details for a single plant: high-resolution photo header
+ *    or fallback category emoji, category, next watering countdown, full schedule,
+ *    care notes, and date added.
+ * 2. Interactive Care Actions:
+ *    - "💧 Water Now": Updates last-watered timestamp to current time, recalculates
+ *      next schedule, and updates Room DB.
+ *    - Favorite Toggle: Toggles favorite flag with immediate database persistence.
+ *    - Reminder Toggle Switch: Enables or disables notifications on the fly,
+ *      automatically registering or cancelling AlarmManager alarms.
+ *    - Edit Mode: Launches AddPlantActivity in edit mode with plant ID.
+ *    - Delete Action: Displays confirmation dialog, removes from DB, cancels alarms,
+ *      and closes screen.
+ * 3. Thread-Safe Architecture:
+ *    All Room database queries and updates are dispatched through an ExecutorService.
+ * ============================================================================
+ */
 public class PlantDetailsActivity extends AppCompatActivity {
 
     private AppDatabase database;
@@ -37,7 +60,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Apply dark mode preference before layout
+        // Step 1: Apply user dark mode preference
         applyDarkModePreference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_details);
@@ -45,6 +68,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
         database = AppDatabase.getInstance(this);
         databaseExecutor = Executors.newSingleThreadExecutor();
 
+        // Step 2: Validate plant ID passed via Intent
         plantId = getIntent().getIntExtra("plant_id", -1);
         if (plantId == -1) {
             Toast.makeText(this, "Invalid plant", Toast.LENGTH_SHORT).show();
@@ -52,13 +76,13 @@ public class PlantDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        // Back button
+        // Step 3: Setup Navigation & Action Buttons
         ImageButton btnBack = findViewById(R.id.btnDetailsBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> onBackPressed());
         }
 
-        // Favorite toggle
+        // Favorite Toggle
         TextView tvFav = findViewById(R.id.tvDetailsFavorite);
         if (tvFav != null) {
             tvFav.setOnClickListener(v -> {
@@ -69,7 +93,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Water Now button
+        // "Water Now" Action Button
         Button btnWater = findViewById(R.id.btnWaterNow);
         if (btnWater != null) {
             btnWater.setOnClickListener(v -> {
@@ -81,7 +105,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Reminder toggle
+        // Reminder Toggle Switch
         Switch swReminder = findViewById(R.id.switchDetailsReminder);
         if (swReminder != null) {
             swReminder.setOnCheckedChangeListener((btn, checked) -> {
@@ -94,7 +118,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Edit button
+        // Edit Button -> Launches AddPlantActivity with current plant ID
         Button btnEdit = findViewById(R.id.btnDetailsEdit);
         if (btnEdit != null) {
             btnEdit.setOnClickListener(v -> {
@@ -104,7 +128,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Delete button
+        // Delete Button
         Button btnDelete = findViewById(R.id.btnDetailsDelete);
         if (btnDelete != null) {
             btnDelete.setOnClickListener(v -> showDeleteConfirmation());
@@ -122,9 +146,13 @@ public class PlantDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Reload data from Room DB in case plant was modified in AddPlantActivity
         loadPlantData();
     }
 
+    /**
+     * Queries Room DB for current plant record on background executor thread.
+     */
     private void loadPlantData() {
         databaseExecutor.execute(() -> {
             Plant plant = database.plantDao().getPlantById(plantId);
@@ -141,10 +169,13 @@ public class PlantDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Binds all plant properties to their corresponding UI views.
+     */
     private void updateUI() {
         if (currentPlant == null) return;
 
-        // Photo header
+        // 1. Photo header or fallback emoji
         ImageView ivPhoto = findViewById(R.id.ivDetailsPlantImage);
         TextView tvEmoji = findViewById(R.id.tvDetailsEmoji);
         LinearLayout layoutHeader = findViewById(R.id.layoutDetailsHeader);
@@ -163,18 +194,18 @@ public class PlantDetailsActivity extends AppCompatActivity {
             showEmojiHeader(ivPhoto, layoutHeader, tvEmoji);
         }
 
-        // Name + category in overlay
+        // 2. Name and Category title
         TextView tvName = findViewById(R.id.tvDetailsPlantName);
         TextView tvCategory = findViewById(R.id.tvDetailsCategory);
         if (tvName != null) tvName.setText(currentPlant.getName());
         if (tvCategory != null)
             tvCategory.setText((currentPlant.getCategory() != null ? currentPlant.getCategory() : "Indoor") + " Plant");
 
-        // Favorite
+        // 3. Favorite heart status
         TextView tvFav = findViewById(R.id.tvDetailsFavorite);
         if (tvFav != null) tvFav.setText(currentPlant.isFavorite() ? "♥" : "♡");
 
-        // Next watering
+        // 4. Live watering countdown calculation
         long nextTime = WateringReminderReceiver.calculateNextTriggerTime(currentPlant);
         if (nextTime <= 0) {
             nextTime = currentPlant.getLastWateredTimestamp()
@@ -200,7 +231,7 @@ public class PlantDetailsActivity extends AppCompatActivity {
             }
         }
 
-        // Reminder schedule summary
+        // 5. Reminder Schedule Summary Text
         TextView tvSchedule = findViewById(R.id.tvDetailsReminderSchedule);
         if (tvSchedule != null) {
             if (currentPlant.isReminderEnabled()) {
@@ -216,10 +247,10 @@ public class PlantDetailsActivity extends AppCompatActivity {
             }
         }
 
-        // Reminder switch
+        // 6. Reminder Switch synchronization (disable listener during programmatic setChecked)
         Switch swReminder = findViewById(R.id.switchDetailsReminder);
         if (swReminder != null) {
-            swReminder.setOnCheckedChangeListener(null); // prevent listener during update
+            swReminder.setOnCheckedChangeListener(null);
             swReminder.setChecked(currentPlant.isReminderEnabled());
             swReminder.setOnCheckedChangeListener((btn, checked) -> {
                 currentPlant.setReminderEnabled(checked);
@@ -229,14 +260,14 @@ public class PlantDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Care notes
+        // 7. Care Notes description
         TextView tvDesc = findViewById(R.id.tvDetailsDescription);
         if (tvDesc != null) {
             String desc = currentPlant.getDescription();
             tvDesc.setText((desc != null && !desc.isEmpty()) ? desc : "No care notes added.");
         }
 
-        // Added date
+        // 8. Date Added formatting
         TextView tvAdded = findViewById(R.id.tvDetailsAddedDate);
         if (tvAdded != null) {
             long created = currentPlant.getCreatedTimestamp() > 0
@@ -266,6 +297,9 @@ public class PlantDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Persists changes to Room DB and updates the AlarmManager alarm accordingly.
+     */
     private void updatePlantInDatabase() {
         if (currentPlant == null) return;
         databaseExecutor.execute(() -> {
@@ -279,6 +313,9 @@ public class PlantDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Shows confirmation dialog before permanently removing plant.
+     */
     private void showDeleteConfirmation() {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Plant")
